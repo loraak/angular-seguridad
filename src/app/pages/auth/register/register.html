@@ -1,0 +1,111 @@
+<p-toast></p-toast>
+
+<div class="flex justify-content-center align-items-center py-5">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <p-card header="Registro de Usuario" styleClass="w-full md:w-30rem">
+
+            <div class="field">
+                <label for="usuario" class="block mb-2">Usuario</label>
+                <input id="usuario" type="text" pInputText formControlName="usuario" class="w-full">
+                <small *ngIf="f['usuario'].touched && f['usuario'].errors?.['required']" class="p-error block">
+                    El nombre de usuario es requerido.
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="nombreCompleto" class="block mb-2">Nombre Completo</label>
+                <input id="nombreCompleto" type="text" pInputText formControlName="nombreCompleto" class="w-full">
+                <small *ngIf="f['nombreCompleto'].touched && f['nombreCompleto'].errors?.['required']" class="p-error block">
+                    El nombre completo es requerido.
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="email" class="block mb-2">Email</label>
+                <input id="email" type="email" pInputText formControlName="email" class="w-full">
+                <div *ngIf="f['email'].touched && f['email'].errors">
+                    <small *ngIf="f['email'].errors?.['required']" class="p-error block">El email es requerido.</small>
+                    <small *ngIf="f['email'].errors?.['email']" class="p-error block">Formato de email inválido.</small>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="password" class="block mb-2">Contraseña</label>
+                <p-password
+                    inputId="password"
+                    formControlName="password"
+                    [toggleMask]="true"
+                    styleClass="w-full"
+                    inputStyleClass="w-full"
+                    [feedback]="false">
+                </p-password>
+                <div *ngIf="f['password'].touched && f['password'].errors">
+                    <small *ngIf="f['password'].errors?.['required']" class="p-error block">La contraseña es requerida.</small>
+                    <small *ngIf="f['password'].errors?.['passwordStrength']" class="p-error block">
+                        La contraseña debe tener al menos 10 caracteres y un símbolo especial (!@#$...).
+                    </small>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="confirmPassword" class="block mb-2">Confirmar Contraseña</label>
+                <p-password
+                    inputId="confirmPassword"
+                    formControlName="confirmPassword"
+                    [toggleMask]="true"
+                    styleClass="w-full"
+                    inputStyleClass="w-full"
+                    [feedback]="false">
+                </p-password>
+                <div *ngIf="f['confirmPassword'].touched && f['confirmPassword'].errors">
+                    <small *ngIf="f['confirmPassword'].errors?.['required']" class="p-error block">
+                        La confirmación de contraseña es requerida.
+                    </small>
+                    <small *ngIf="f['confirmPassword'].errors?.['passwordMismatch']" class="p-error block">
+                        Las contraseñas no coinciden.
+                    </small>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="direccion" class="block mb-2">Dirección</label>
+                <input id="direccion" type="text" pInputText formControlName="direccion" class="w-full">
+                <small *ngIf="f['direccion'].touched && f['direccion'].errors?.['required']" class="p-error block">
+                    La dirección es requerida.
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="fechaNacimiento" class="block mb-2">Fecha de Nacimiento</label>
+                <p-inputMask
+                    inputId="fechaNacimiento"
+                    formControlName="fechaNacimiento"
+                    mask="99/99/9999"
+                    placeholder="DD/MM/AAAA"
+                    styleClass="w-full"
+                    inputStyleClass="w-full">
+                </p-inputMask>
+                <div *ngIf="f['fechaNacimiento'].touched && f['fechaNacimiento'].errors">
+                    <small *ngIf="f['fechaNacimiento'].errors?.['required']" class="p-error block">
+                        La fecha de nacimiento es requerida.
+                    </small>
+                    <small *ngIf="f['fechaNacimiento'].errors?.['notAdult']" class="p-error block">
+                        Debe ser mayor de 18 años.
+                    </small>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="telefono" class="block mb-2">Teléfono</label>
+                <input id="telefono" type="text" pInputText formControlName="telefono" class="w-full" pKeyFilter="int">
+                <div *ngIf="f['telefono'].touched && f['telefono'].errors">
+                    <small *ngIf="f['telefono'].errors?.['required']" class="p-error block">El número de teléfono es requerido.</small>
+                    <small *ngIf="f['telefono'].errors?.['pattern']" class="p-error block">Solo se permiten números.</small>
+                </div>
+            </div>
+
+            <p-button label="Registrarse" type="submit" styleClass="w-full" [disabled]="registerForm.invalid"></p-button>
+
+        </p-card>
+    </form>
+</div>

@@ -1,0 +1,33 @@
+<p-toast></p-toast>
+<div class="flex justify-content-center align-items-center h-screen">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <p-card header="Login" styleClass="w-full md:w-25rem">
+            <div class="field">
+                <label for="email" class="block mb-2">Email</label>
+                <input
+                    pInputText
+                    id="email"
+                    formControlName="email"
+                    class="w-full"
+                    [ngClass]="{'ng-invalid ng-dirty': email?.invalid && (email?.dirty || email?.touched)}"
+                />
+                <small *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="p-error block">
+                    <span *ngIf="email?.errors?.['required']">El email es requerido.</span>
+                    <span *ngIf="email?.errors?.['email']">El email no es válido.</span>
+                </small>
+            </div>
+            <div class="field">
+                <label for="password" class="block mb-2">Contraseña</label>
+                <p-password
+                    inputId="password"
+                    formControlName="password"
+                    [feedback]="false"
+                    styleClass="w-full"
+                    inputStyleClass="w-full"
+                ></p-password>
+                 <small *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="p-error block">La contraseña es requerida.</small>
+            </div>
+            <p-button label="Iniciar Sesión" type="submit" styleClass="w-full" [disabled]="!loginForm.valid"></p-button>
+        </p-card>
+    </form>
+</div>
