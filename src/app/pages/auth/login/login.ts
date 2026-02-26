@@ -7,6 +7,8 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {Router} from '@angular/router'; 
 
 @Component({
   selector: 'app-login',
@@ -17,6 +19,7 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
     CardModule,
     InputTextModule,
+    FloatLabelModule, 
     PasswordModule,
     ToastModule,         
   ],
@@ -27,7 +30,7 @@ import { ToastModule } from 'primeng/toast';
 export class Login {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private messageService: MessageService) {
+  constructor(private fb: FormBuilder, private messageService: MessageService, private router: Router) {
     this.loginForm = this.fb.group({
       email:    ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -42,14 +45,16 @@ export class Login {
       this.messageService.add({
         severity: 'success',
         summary: 'Éxito',
-        detail: 'Inicio de sesión correcto.'
+        detail: 'Inicio de sesión exitoso.'
       });
-      console.log('Login:', this.loginForm.value);
+      setTimeout(() => {
+        this.router.navigate(['/home']);
+      }, 1000);
     } else {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'Por favor, corrija los errores en el formulario.'
+        detail: 'Por favor, corrija los errores.'
       });
       this.loginForm.markAllAsTouched();
     }

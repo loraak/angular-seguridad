@@ -18,6 +18,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { InputMaskModule } from 'primeng/inputmask';
+import {FloatLabelModule} from 'primeng/floatlabel';
 
 export function passwordStrengthValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -60,7 +61,6 @@ export function adultAgeValidator(): ValidatorFn {
     const birthDate = control.value;
     if (!birthDate || birthDate.includes('_')) return null;
 
-    // Parsear formato DD/MM/YYYY
     const [day, month, year] = birthDate.split('/').map(Number);
     const birth = new Date(year, month - 1, day);
 
@@ -88,6 +88,7 @@ export function adultAgeValidator(): ValidatorFn {
     CardModule,
     InputTextModule,
     PasswordModule,
+    FloatLabelModule, 
     ButtonModule,
     ToastModule,
     KeyFilterModule,

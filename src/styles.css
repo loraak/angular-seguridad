@@ -3,3 +3,9 @@
     font-family: 'Arial', sans-serif; 
     color: aliceblue;
 }
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}

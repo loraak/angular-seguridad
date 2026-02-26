@@ -7,12 +7,12 @@ import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 
 @Component({
-  selector: 'app-landing',
+  selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterModule, PanelModule, DrawerModule, ButtonModule, AvatarModule],
-  templateUrl: './landing.html',
-  styleUrl: './landing.css'
+  templateUrl: './home.html',
+  styleUrl: './home.css'
 })
-export class Landing {
+export class Home {
   sidebarVisible = true;
 }
