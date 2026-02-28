@@ -1,0 +1,72 @@
+<div style="max-width: 600px;">
+
+    <p-card styleClass="mb-4">
+        <div class="flex align-items-center gap-3">
+            <p-avatar icon="pi pi-user" size="xlarge" shape="circle"
+                styleClass="bg-primary">
+            </p-avatar>
+            <div>
+                <h2 style="margin: 0 0 0.25rem; font-size: 1.5rem; font-weight: 700; color: #1e293b;">
+                    {{ usuario.nombreCompleto }}
+                </h2>
+                <p style="margin: 0 0 0.5rem; color: #94a3b8;">@{{ usuario.usuario }}</p>
+                <p-tag value="Activo" severity="success"></p-tag>
+            </div>
+        </div>
+    </p-card>
+
+    <p-card header="Información Personal">
+        <div class="flex flex-column gap-3">
+
+            <div class="flex align-items-center gap-3">
+                <p-avatar icon="pi pi-user" shape="square" styleClass="bg-primary-50"></p-avatar>
+                <div>
+                    <p class="text-xs text-color-secondary m-0">Usuario</p>
+                    <p class="font-medium m-0">{{ usuario.usuario }}</p>
+                </div>
+            </div>
+
+            <p-divider styleClass="my-0"></p-divider>
+
+            <div class="flex align-items-center gap-3">
+                <p-avatar icon="pi pi-envelope" shape="square" styleClass="bg-primary-50"></p-avatar>
+                <div>
+                    <p class="text-xs text-color-secondary m-0">Email</p>
+                    <p class="font-medium m-0">{{ usuario.email }}</p>
+                </div>
+            </div>
+
+            <p-divider styleClass="my-0"></p-divider>
+
+            <div class="flex align-items-center gap-3">
+                <p-avatar icon="pi pi-map-marker" shape="square" styleClass="bg-primary-50"></p-avatar>
+                <div>
+                    <p class="text-xs text-color-secondary m-0">Dirección</p>
+                    <p class="font-medium m-0">{{ usuario.direccion }}</p>
+                </div>
+            </div>
+
+            <p-divider styleClass="my-0"></p-divider>
+
+            <div class="flex align-items-center gap-3">
+                <p-avatar icon="pi pi-calendar" shape="square" styleClass="bg-primary-50"></p-avatar>
+                <div>
+                    <p class="text-xs text-color-secondary m-0">Fecha de Nacimiento</p>
+                    <p class="font-medium m-0">{{ usuario.fechaNacimiento }}</p>
+                </div>
+            </div>
+
+            <p-divider styleClass="my-0"></p-divider>
+
+            <div class="flex align-items-center gap-3">
+                <p-avatar icon="pi pi-phone" shape="square" styleClass="bg-primary-50"></p-avatar>
+                <div>
+                    <p class="text-xs text-color-secondary m-0">Teléfono</p>
+                    <p class="font-medium m-0">{{ usuario.telefono }}</p>
+                </div>
+            </div>
+
+        </div>
+    </p-card>
+
+</div>
