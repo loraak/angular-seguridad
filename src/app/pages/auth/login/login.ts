@@ -9,6 +9,7 @@ import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 import {FloatLabelModule} from 'primeng/floatlabel';
 import {Router} from '@angular/router'; 
+import { AuthService, Rol } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,9 +20,9 @@ import {Router} from '@angular/router';
     ButtonModule,
     CardModule,
     InputTextModule,
-    FloatLabelModule, 
+    FloatLabelModule,
     PasswordModule,
-    ToastModule,         
+    ToastModule,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -30,7 +31,12 @@ import {Router} from '@angular/router';
 export class Login {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private messageService: MessageService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private messageService: MessageService,
+    private router: Router,
+    private authService: AuthService
+  ) {
     this.loginForm = this.fb.group({
       email:    ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -42,21 +48,18 @@ export class Login {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Éxito',
-        detail: 'Inicio de sesión exitoso.'
-      });
-      setTimeout(() => {
-        this.router.navigate(['/home']);
-      }, 1000);
+        const { email, password } = this.loginForm.value;
+        const ok = this.authService.login(email, password);
+
+        if (ok) {
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Inicio de sesión exitoso.' });
+            setTimeout(() => this.router.navigate(['/app/home']), 1000);
+        } else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Email o contraseña incorrectos.' });
+        }
     } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Por favor, corrija los errores.'
-      });
-      this.loginForm.markAllAsTouched();
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Por favor, corrija los errores.' });
+        this.loginForm.markAllAsTouched();
     }
-  }
+}
 }

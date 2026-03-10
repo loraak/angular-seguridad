@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Groups } from './groups';
+import { Crud } from './crud';
 
-describe('Groups', () => {
-  let component: Groups;
-  let fixture: ComponentFixture<Groups>;
+describe('Crud', () => {
+  let component: Crud;
+  let fixture: ComponentFixture<Crud>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Groups]
+      imports: [Crud]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Groups);
+    fixture = TestBed.createComponent(Crud);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

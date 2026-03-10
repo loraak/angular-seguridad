@@ -1,20 +1,40 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
 <div style="max-width: 600px;">
 
     <p-card styleClass="mb-4">
-        <div class="flex align-items-center gap-3">
-            <p-avatar icon="pi pi-user" size="xlarge" shape="circle"
-                styleClass="bg-primary">
-            </p-avatar>
-            <div>
-                <h2 style="margin: 0 0 0.25rem; font-size: 1.5rem; font-weight: 700; color: #1e293b;">
-                    {{ usuario.nombreCompleto }}
-                </h2>
-                <p style="margin: 0 0 0.5rem; color: #94a3b8;">@{{ usuario.usuario }}</p>
-                <p-tag value="Activo" severity="success"></p-tag>
+        <div class="flex align-items-center justify-content-between">
+            <div class="flex align-items-center gap-3">
+                <p-avatar icon="pi pi-user" size="xlarge" shape="circle" styleClass="bg-primary">
+                </p-avatar>
+                <div>
+                    <h2 style="margin: 0 0 0.25rem; font-size: 1.5rem; font-weight: 700; color: #1e293b;">
+                        {{ usuario.nombreCompleto }}
+                    </h2>
+                    <p style="margin: 0 0 0.5rem; color: #94a3b8;">@{{ usuario.usuario }}</p>
+                    <p-tag
+                        [value]="usuario.activo ? 'Activo' : 'Baja'"
+                        [severity]="usuario.activo ? 'success' : 'danger'">
+                    </p-tag>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <p-button icon="pi pi-pencil" [rounded]="true" [text]="true"
+                    pTooltip="Editar perfil"
+                    (onClick)="abrirEditar()"
+                    [disabled]="!usuario.activo">
+                </p-button>
+                <p-button icon="pi pi-ban" [rounded]="true" [text]="true"
+                    severity="danger" pTooltip="Dar de baja"
+                    (onClick)="confirmarBaja()"
+                    [disabled]="!usuario.activo">
+                </p-button>
             </div>
         </div>
     </p-card>
 
+    <!-- Información personal -->
     <p-card header="Información Personal">
         <div class="flex flex-column gap-3">
 
@@ -25,7 +45,6 @@
                     <p class="font-medium m-0">{{ usuario.usuario }}</p>
                 </div>
             </div>
-
             <p-divider styleClass="my-0"></p-divider>
 
             <div class="flex align-items-center gap-3">
@@ -35,7 +54,6 @@
                     <p class="font-medium m-0">{{ usuario.email }}</p>
                 </div>
             </div>
-
             <p-divider styleClass="my-0"></p-divider>
 
             <div class="flex align-items-center gap-3">
@@ -45,7 +63,6 @@
                     <p class="font-medium m-0">{{ usuario.direccion }}</p>
                 </div>
             </div>
-
             <p-divider styleClass="my-0"></p-divider>
 
             <div class="flex align-items-center gap-3">
@@ -55,7 +72,6 @@
                     <p class="font-medium m-0">{{ usuario.fechaNacimiento }}</p>
                 </div>
             </div>
-
             <p-divider styleClass="my-0"></p-divider>
 
             <div class="flex align-items-center gap-3">
@@ -68,5 +84,91 @@
 
         </div>
     </p-card>
-
 </div>
+
+<!-- Modal Editar -->
+<p-dialog
+    [(visible)]="modalVisible"
+    header="Editar Perfil"
+    [modal]="true"
+    [style]="{ width: '480px' }"
+    [draggable]="false">
+
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1rem 0;">
+
+        <div>
+            <p-floatlabel>
+                <input id="nombreCompleto" type="text" pInputText [formControl]="f['nombreCompleto']" class="w-full">
+                <label for="nombreCompleto">Nombre Completo</label>
+            </p-floatlabel>
+            <small *ngIf="f['nombreCompleto'].touched && f['nombreCompleto'].errors?.['required']" class="p-error block mt-1">
+                El nombre es requerido.
+            </small>
+        </div>
+
+        <div>
+            <p-floatlabel>
+                <input id="usuario" type="text" pInputText [formControl]="f['usuario']" class="w-full">
+                <label for="usuario">Usuario</label>
+            </p-floatlabel>
+            <small *ngIf="f['usuario'].touched && f['usuario'].errors?.['required']" class="p-error block mt-1">
+                El usuario es requerido.
+            </small>
+        </div>
+
+        <div>
+            <p-floatlabel>
+                <input id="email" type="email" pInputText [formControl]="f['email']" class="w-full">
+                <label for="email">Email</label>
+            </p-floatlabel>
+            <small *ngIf="f['email'].touched && f['email'].errors?.['required']" class="p-error block mt-1">
+                El email es requerido.
+            </small>
+            <small *ngIf="f['email'].touched && f['email'].errors?.['email']" class="p-error block mt-1">
+                Formato de email inválido.
+            </small>
+        </div>
+
+        <div>
+            <p-floatlabel>
+                <input id="direccion" type="text" pInputText [formControl]="f['direccion']" class="w-full">
+                <label for="direccion">Dirección</label>
+            </p-floatlabel>
+            <small *ngIf="f['direccion'].touched && f['direccion'].errors?.['required']" class="p-error block mt-1">
+                La dirección es requerida.
+            </small>
+        </div>
+
+        <div>
+            <p-floatlabel>
+                <p-inputmask inputId="fechaNacimiento"
+                    [formControl]="f['fechaNacimiento']"
+                    mask="99/99/9999"
+                    placeholder="DD/MM/AAAA"
+                    styleClass="w-full"
+                    inputStyleClass="w-full">
+                </p-inputmask>
+                <label for="fechaNacimiento">Fecha de Nacimiento</label>
+            </p-floatlabel>
+            <small *ngIf="f['fechaNacimiento'].touched && f['fechaNacimiento'].errors?.['required']" class="p-error block mt-1">
+                La fecha es requerida.
+            </small>
+        </div>
+
+        <div>
+            <p-floatlabel>
+                <input id="telefono" type="text" pInputText [formControl]="f['telefono']" class="w-full" pKeyFilter="int">
+                <label for="telefono">Teléfono</label>
+            </p-floatlabel>
+            <small *ngIf="f['telefono'].touched && f['telefono'].errors?.['required']" class="p-error block mt-1">
+                El teléfono es requerido.
+            </small>
+        </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Cancelar" severity="secondary" [text]="true" (onClick)="modalVisible = false" []></p-button>
+        <p-button label="Guardar Cambios" (onClick)="guardar()"></p-button>
+    </ng-template>
+</p-dialog>
