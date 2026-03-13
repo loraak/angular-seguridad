@@ -94,28 +94,26 @@ export class Superadmin {
 
     usuarios: UsuarioAdmin[] = [
         {
-            id: '1', nombreCompleto: 'César Admin', email: 'admin@app.com',
+            id: '1', nombreCompleto: 'Jonathan Joestar', email: 'jonathan@gmail.com',
             password: '123', activo: true,
             permisos: [
-                'perfil:editar', 'perfil:baja',
-                'groups:admin', 'groups:ver', 'groups:crear', 'groups:editar', 'groups:baja',
+                'perfil:editar', 'perfil:baja', 'groups:admin', 'groups:ver', 'groups:crear', 'groups:editar', 'groups:baja',
                 'groups:verespecifico', 'groups:detail:crear', 'groups:detail:editar', 'groups:detail:baja',
                 'usuarios:ver', 'usuarios:crear', 'usuarios:editar', 'usuarios:baja',
-                'tickets:admin', 'tickets:ver', 'tickets:agregar', 'tickets:editar', 'tickets:eliminar', 'tickets:detalle',
-            ],
+                'tickets:admin', 'tickets:ver', 'tickets:agregar', 'tickets:editar', 'tickets:eliminar', 'tickets:detalle'
+            ]
         },
         {
-            id: '2', nombreCompleto: 'César Usuario', email: 'usuario@app.com',
+            id: '2', nombreCompleto: 'Giorno Giovanna', email: 'giorno@gmail.com',
             password: '123', activo: true,
             permisos: [
-                'perfil:editar',
-                'groups:ver', 'groups:verespecifico', 'groups:crear',
+                'perfil:editar', 'groups:ver', 'groups:verespecifico', 'groups:crear',
                 'groups:detail:crear', 'groups:detail:editar', 'groups:detail:baja', 'groups:mistickets',
-                'tickets:ver', 'tickets:agregar', 'tickets:editar', 'tickets:eliminar', 'tickets:detalle',
-            ],
+                'tickets:ver', 'tickets:agregar', 'tickets:editar', 'tickets:eliminar', 'tickets:detalle'
+            ]
         },
         {
-            id: '3', nombreCompleto: 'César SuperAdmin', email: 'superadmin@app.com',
+            id: '3', nombreCompleto: 'Dio Brando', email: 'dio@gmail.com',
             password: '123', activo: true,
             permisos: PERMISOS_LEGIBLES.map(p => p.permiso),
         },
@@ -249,22 +247,6 @@ export class Superadmin {
                 this.usuarios[idx] = { ...this.usuarios[idx], activo: false };
                 this.usuarios = [...this.usuarios];
                 this.messageService.add({ severity: 'warn', summary: 'Baja', detail: `"${usuario.nombreCompleto}" dado de baja.` });
-            }
-        });
-    }
-
-    confirmarEliminar(usuario: UsuarioAdmin) {
-        this.confirmationService.confirm({
-            message: `¿Eliminar permanentemente a "${usuario.nombreCompleto}"?`,
-            header: 'Confirmar Eliminación',
-            icon: 'pi pi-exclamation-triangle',
-            acceptLabel: 'Sí, eliminar',
-            rejectLabel: 'Cancelar',
-            acceptButtonProps: { severity: 'danger' },
-            rejectButtonProps: { severity: 'secondary', text: true },
-            accept: () => {
-                this.usuarios = this.usuarios.filter(u => u.id !== usuario.id);
-                this.messageService.add({ severity: 'error', summary: 'Eliminado', detail: `"${usuario.nombreCompleto}" eliminado.` });
             }
         });
     }

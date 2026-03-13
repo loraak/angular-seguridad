@@ -23,12 +23,10 @@ import { HasPermissionDirective } from '../../directives/has-permission.directiv
 
 interface Group {
     id: number;
-    nivel: number;
     autor: string;
     nombre: string;
     integrantes: number;
     tickets: number;
-    descripcion: string;
     activo: boolean;
 }
 
@@ -41,7 +39,7 @@ interface Group {
         InputTextModule, InputNumberModule, TextareaModule,
         TagModule, ToastModule, ConfirmDialogModule,
         FloatLabelModule, DividerModule,
-        HasPermissionDirective // <-- Importar directiva
+        HasPermissionDirective
     ],
     providers: [MessageService, ConfirmationService],
     templateUrl: './crud.html',
@@ -53,52 +51,13 @@ export class Groups {
     protected router = inject(Router); 
 
     grupos: Group[] = [
-        { id: 1, nivel: 1, autor: 'Jonathan', nombre: 'Joestar', integrantes: 5, tickets: 5, descripcion: 'Grupo principal', activo: true },
-        { id: 2, nivel: 2, autor: 'César Usuario', nombre: 'Joestar', integrantes: 3, tickets: 5, descripcion: 'Grupo secundario', activo: true },
-        { id: 3, nivel: 1, autor: 'César Usuario', nombre: 'Stardust', integrantes: 8, tickets: 1, descripcion: 'Grupo especial', activo: false },
-        { id: 4, nivel: 3, autor: 'César Usuario', nombre: 'Diamond', integrantes: 4, tickets: 2, descripcion: 'Grupo local', activo: true },
-        { id: 5, nivel: 2, autor: 'Giorno', nombre: 'Passione', integrantes: 10, tickets: 3, descripcion: 'Mafia', activo: true },
-        { id: 6, nivel: 1, autor: 'Jolyne', nombre: 'Stone', integrantes: 6, tickets: 4, descripcion: 'Prisión', activo: true },
-        { id: 7, nivel: 4, autor: 'Johnny', nombre: 'Steel Ball', integrantes: 2, tickets: 1, descripcion: 'Carrera', activo: true },
-        { id: 8, nivel: 3, autor: 'Gappy', nombre: 'Jojolion', integrantes: 5, tickets: 1, descripcion: 'Misterio', activo: true },
-        { id: 9, nivel: 1, autor: 'Dio', nombre: 'Brando', integrantes: 15, tickets: 5, descripcion: 'Villanos', activo: false },
-        { id: 10, nivel: 2, autor: 'Kira', nombre: 'Morioh', integrantes: 1, tickets: 2, descripcion: 'Tranquilidad', activo: true }
+        { id: 1, autor: 'Jonathan Joestar', nombre: 'Phantom Blood', integrantes: 3, tickets: 5,  activo: true },
+        { id: 2, autor: 'Giorno Giovanna', nombre: 'Golden Experience', integrantes: 7, tickets: 5, activo: true },
+        { id: 3, autor: 'Giorno Giovanna', nombre: 'El Padrino', integrantes: 2, tickets: 1, activo: false },
+        { id: 4, autor: 'Giorno Giovanna', nombre: 'Réquiem', integrantes: 2, tickets: 2, activo: true },
+        { id: 5, autor: 'Jotaro Joestar', nombre: 'Star Dust', integrantes: 5, tickets: 3, activo: false },
+        { id: 6, autor: 'Jolyne Joestar', nombre: 'Stone Ocean', integrantes: 6, tickets: 4, activo: true },
     ];
-
-    ticketsMock = [
-        { id: 101, titulo: 'Falla en login', estado: 'Pendiente', grupo: 'Joestar', asignado: 'César Usuario' },
-        { id: 102, titulo: 'Actualizar BD', estado: 'En Progreso', grupo: 'Joestar', asignado: 'Jonathan' },
-        { id: 103, titulo: 'Crear vistas', estado: 'Hecho', grupo: 'Stardust', asignado: 'César Usuario' },
-        { id: 104, titulo: 'Error 500', estado: 'Bloqueado', grupo: 'Joestar', asignado: 'Admin' },
-    ];
-
-    getResumenGrupo(nombreGrupo: string) {
-        const tickets = this.ticketsMock.filter(t => t.grupo === nombreGrupo);
-        
-        return {
-            total: tickets.length,
-            pendientes: tickets.filter(t => t.estado === 'Pendiente').length,
-            enProgreso: tickets.filter(t => t.estado === 'En Progreso').length,
-            bloqueados: tickets.filter(t => t.estado === 'Bloqueado').length,
-            hechos: tickets.filter(t => t.estado === 'Hecho').length,
-            recientes: tickets.slice(-3).reverse() 
-        };
-    }
-
-    expandedRows: { [key: string]: boolean } = {};
-    resumenes: { [key: number]: any } = {};
-
-    toggleRow(grupo: Group) {
-        if (this.expandedRows[grupo.id]) {
-            delete this.expandedRows[grupo.id];
-            delete this.resumenes[grupo.id];
-        } 
-        else {
-            this.expandedRows[grupo.id] = true;
-            this.resumenes[grupo.id] = this.getResumenGrupo(grupo.nombre);
-        }
-        this.expandedRows = { ...this.expandedRows };
-    }
 
     get gruposVisibles() {
         if (this.permissionsSvc.hasPermission('groups:admin')) {
@@ -120,7 +79,6 @@ export class Groups {
         private confirmationService: ConfirmationService
     ) {
         this.form = this.fb.group({
-            nivel:       [null, Validators.required],
             autor:       ['', Validators.required],
             nombre:      ['', Validators.required],
             integrantes: [null, Validators.required],

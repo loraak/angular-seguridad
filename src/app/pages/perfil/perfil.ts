@@ -27,6 +27,7 @@ interface TicketResumen {
     estado: string;
     prioridad: string;
     grupo: string;
+    descripcion?: string; 
     fechaLimite: Date;
 }
 
@@ -39,7 +40,7 @@ interface TicketResumen {
         ButtonModule, DialogModule, InputTextModule, FloatLabelModule,
         ToastModule, ConfirmDialogModule, TooltipModule,
         InputMaskModule, KeyFilterModule, TableModule,
-        HasPermissionDirective // <-- Agregada para los botones
+        HasPermissionDirective
     ],
     providers: [MessageService, ConfirmationService],
     templateUrl: './perfil.html',
@@ -56,17 +57,14 @@ export class Perfil {
         email: 'cesar@email.com',
         direccion: 'Av. Estados Unidos',
         fechaNacimiento: '15/03/1800',
-        telefono: '524681033370',
+        telefono: '4681033370',
         activo: true
     };
 
-    // Tickets asignados al usuario (en producción vendrían del backend)
     ticketsAsignados: TicketResumen[] = [
-        { id: 1, titulo: 'Actualizar dependencias', estado: 'Pendiente',   prioridad: 'Media',  grupo: 'Joestar',  fechaLimite: new Date('2026-03-15') },
-        { id: 2, titulo: 'Crear BD',                estado: 'En Progreso', prioridad: 'Alta',   grupo: 'Joestar',  fechaLimite: new Date('2026-03-20') },
-        { id: 3, titulo: 'Diseñar logo',            estado: 'Hecho',       prioridad: 'Baja',   grupo: 'Stardust', fechaLimite: new Date('2026-03-05') },
-        { id: 4, titulo: 'Arreglar CORS',           estado: 'Bloqueado',   prioridad: 'Crítica',grupo: 'Diamond',  fechaLimite: new Date('2026-03-10') },
-        { id: 5, titulo: 'Implementar JWT',         estado: 'En Progreso', prioridad: 'Alta',   grupo: 'Passione', fechaLimite: new Date('2026-03-18') },
+        { id: 101, titulo: 'Derrotar a Diavolo', descripcion: 'Matar al Diavolo', grupo: 'Passione', estado: 'Hecho', prioridad: 'Alta', fechaLimite: new Date('2026-03-15')},
+        { id: 103, titulo: 'Sacar a pasear a Polnareff', estado: 'Hecho', grupo: 'Passione', prioridad: 'Media', fechaLimite: new Date('2026-03-20')},
+        { id: 108, titulo: 'Revivir a Passione', estado: 'Bloqueado', grupo: 'Passione', prioridad: 'Alta', fechaLimite: new Date('2026-05-02') },
     ];
 
     get resumen() {

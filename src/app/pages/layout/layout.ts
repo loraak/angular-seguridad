@@ -5,7 +5,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 
 import { AuthService } from '../../services/auth.service';
-import { HasPermissionDirective } from '../../directives/has-permission.directive'; // Ajusta la ruta
+import { HasPermissionDirective } from '../../directives/has-permission.directive'; 
 
 @Component({
   selector: 'app-layout',

@@ -18,7 +18,7 @@ export class TokenService {
     generateMockToken(): string {
         
         const payloadAdmin = {
-            id: '1', nombreCompleto: 'César Admin', email: 'admin@app.com',
+            id: '1', nombreCompleto: 'Jonathan Joestar', email: 'jonathan@gmail.com',
             permisos: [
                 'perfil:editar', 'perfil:baja', 'groups:admin', 'groups:ver', 'groups:crear', 'groups:editar', 'groups:baja',
                 'groups:verespecifico', 'groups:detail:crear', 'groups:detail:editar', 'groups:detail:baja',
@@ -28,7 +28,7 @@ export class TokenService {
         };
 
         const payloadUsuario = {
-            id: '2', nombreCompleto: 'César Usuario', email: 'usuario@app.com',
+            id: '2', nombreCompleto: 'Giorno Giovanna', email: 'giorno@gmail.com',
             permisos: [
                 'perfil:editar', 'groups:ver', 'groups:verespecifico', 'groups:crear',
                 'groups:detail:crear', 'groups:detail:editar', 'groups:detail:baja', 'groups:mistickets',
@@ -37,7 +37,7 @@ export class TokenService {
         };
 
         const payloadSuperAdmin = {
-            id: '3', nombreCompleto: 'César SuperAdmin', email: 'superadmin@app.com',
+            id: '3', nombreCompleto: 'Dio Brando', email: 'dio@gmail.com',
             permisos: [
                 'perfil:editar', 'perfil:baja', 'groups:admin', 'groups:ver', 'groups:crear', 'groups:editar', 'groups:baja', 
                 'groups:verespecifico', 'groups:detail:crear', 'groups:detail:editar', 'groups:detail:baja', 'groups:mistickets', 
@@ -47,7 +47,7 @@ export class TokenService {
             ]
         };
 
-        const payloadActivo = payloadAdmin; 
+        const payloadActivo = payloadSuperAdmin; 
 
         return `header.${btoa(JSON.stringify(payloadActivo))}.signature`;
     }

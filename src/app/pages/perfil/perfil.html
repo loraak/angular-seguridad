@@ -8,8 +8,8 @@
             <div class="flex align-items-center gap-3">
                 <p-avatar image="/mista.jpg" size="xlarge" shape="circle" styleClass="bg-primary text-white"></p-avatar>
                 <div>
-                    <h2 class="m-0 mb-1 text-2xl font-bold text-color">{{ usuario.nombreCompleto }}</h2>
-                    <p class="m-0 mb-2 text-color-secondary">@{{ usuario.usuario }}</p>
+                    <h2 class="m-0 mb-1 text-2xl font-bold text-color">{{ authService.usuario()?.nombreCompleto}}</h2>
+                    <p class="m-0 mb-2 text-color-secondary">{{ authService.usuario()?.email }}</p>
                     <p-tag
                         [value]="usuario.activo ? 'Activo' : 'Baja'"
                         [severity]="usuario.activo ? 'success' : 'danger'">
@@ -38,7 +38,7 @@
                 <p-avatar icon="pi pi-user" shape="square" styleClass="surface-ground text-primary"></p-avatar>
                 <div>
                     <p class="text-xs text-color-secondary m-0">Usuario</p>
-                    <p class="font-medium text-color m-0">{{ usuario.usuario }}</p>
+                    <p class="font-medium text-color m-0">{{ authService.usuario()?.nombreCompleto }}</p>
                 </div>
             </div>
             <p-divider styleClass="my-0"></p-divider>
@@ -47,7 +47,7 @@
                 <p-avatar icon="pi pi-envelope" shape="square" styleClass="surface-ground text-primary"></p-avatar>
                 <div>
                     <p class="text-xs text-color-secondary m-0">Email</p>
-                    <p class="font-medium text-color m-0">{{ usuario.email }}</p>
+                    <p class="font-medium text-color m-0">{{ authService.usuario()?.email }}</p>
                 </div>
             </div>
             <p-divider styleClass="my-0"></p-divider>

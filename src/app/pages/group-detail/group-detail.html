@@ -57,7 +57,6 @@
                                 <div class="flex justify-content-between align-items-start mb-2">
                                     <div class="font-medium text-color">{{ ticket.titulo }}</div>
                                     <div class="flex gap-1">
-                                        <p-button *ifHasPermission="['groups:detail:editar']" icon="pi pi-pencil" [text]="true" [rounded]="true" size="small" (onClick)="$event.stopPropagation(); editarTicket(ticket)"></p-button>
                                         <p-button *ifHasPermission="['groups:detail:baja']" icon="pi pi-trash" [text]="true" [rounded]="true" severity="danger" size="small" (click)="$event.stopPropagation(); eliminarTicket(ticket)"></p-button>
                                     </div>
                                 </div>
@@ -67,7 +66,8 @@
                                 </div>
                                 
                                 <div class="text-sm text-color-secondary flex flex-column gap-1">
-                                    <span class="flex align-items-center gap-2"><i class="pi pi-user text-xs"></i> {{ ticket.asignado }}</span>
+                                    <span class="flex align-items-center gap-2"><i class="pi pi-user text-xs"></i> Creado por: {{ ticket.creador }}</span>
+                                    <span class="flex align-items-center gap-2"><i class="pi pi-user text-xs"></i> Asignado a: {{ ticket.asignado }}</span>
                                     <span class="flex align-items-center gap-2"><i class="pi pi-calendar text-xs"></i> Vence: {{ ticket.fechaLimite | date:'dd/MM/yyyy' }}</span>
                                 </div>
                             </div>
@@ -88,7 +88,6 @@
                 <ng-template pTemplate="caption">
                     <div class="flex justify-content-end">
                         <span class="p-input-icon-left">
-                            <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar ticket..." />
                         </span>
                     </div>
@@ -96,8 +95,9 @@
 
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="id">ID / Título <p-sortIcon field="id"></p-sortIcon></th>
+                        <th pSortableColumn="id">Título <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+                        <th pSortableColumn="asignado">Creado por <p-sortIcon field="creador"></p-sortIcon></th>
                         <th pSortableColumn="asignado">Asignado a <p-sortIcon field="asignado"></p-sortIcon></th>
                         <th pSortableColumn="prioridad">Prioridad <p-sortIcon field="prioridad"></p-sortIcon></th>
                         <th pSortableColumn="fechaLimite">Fecha Límite <p-sortIcon field="fechaLimite"></p-sortIcon></th>
@@ -105,23 +105,28 @@
                     </tr>
                     <tr>
                         <th><p-columnFilter type="text" field="titulo" matchMode="contains" [showMenu]="false"></p-columnFilter></th>
-                        <th><p-columnFilter field="estado" matchMode="equals" [showMenu]="false">
-                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <select (ngModelChange)="filter($event)" class="w-full p-inputtext p-2" style="appearance: auto;">
-                                    <option value="">Todos</option>
-                                    @for (est of estados; track est) { <option [value]="est">{{ est }}</option> }
-                                </select>
-                            </ng-template>
-                        </p-columnFilter></th>
+                        <th>
+                            <p-columnFilter field="estado" matchMode="equals" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <select [value]="value || ''" (change)="filter($any($event.target).value)" class="w-full p-inputtext p-2" style="appearance: auto;">
+                                        <option value="">Todos</option>
+                                        @for (est of estados; track est) { <option [value]="est">{{ est }}</option> }
+                                    </select>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th><p-columnFilter type="text" field="creador" matchMode="contains" [showMenu]="false"></p-columnFilter></th>
                         <th><p-columnFilter type="text" field="asignado" matchMode="contains" [showMenu]="false"></p-columnFilter></th>
-                        <th><p-columnFilter field="prioridad" matchMode="equals" [showMenu]="false">
-                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <select (ngModelChange)="filter($event)" class="w-full p-inputtext p-2" style="appearance: auto;">
-                                    <option value="">Todas</option>
-                                    @for (prio of prioridades; track prio) { <option [value]="prio">{{ prio }}</option> }
-                                </select>
-                            </ng-template>
-                        </p-columnFilter></th>
+                        <th>
+                            <p-columnFilter field="prioridad" matchMode="equals" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <select [value]="value || ''" (change)="filter($any($event.target).value)" class="w-full p-inputtext p-2" style="appearance: auto;">
+                                        <option value="">Todas</option>
+                                        @for (prio of prioridades; track prio) { <option [value]="prio">{{ prio }}</option> }
+                                    </select>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -131,12 +136,14 @@
                     <tr>
                         <td class="font-medium cursor-pointer text-primary" (click)="editarTicket(ticket)">#{{ ticket.id }} - {{ ticket.titulo }}</td>
                         <td><p-tag [value]="ticket.estado" severity="info"></p-tag></td>
+                        <td>{{ ticket.creador }}</td>
                         <td>{{ ticket.asignado }}</td>
                         <td><p-tag [value]="ticket.prioridad" [severity]="getSeverity(ticket.prioridad)"></p-tag></td>
                         <td>{{ ticket.fechaLimite | date:'dd/MM/yyyy' }}</td>
                         <td class="text-center">
-                            <p-button *ifHasPermission="['groups:detail:editar']" icon="pi pi-pencil" [text]="true" [rounded]="true" size="small" (onClick)="editarTicket(ticket)"></p-button>
-                            <p-button *ifHasPermission="['groups:detail:baja']" icon="pi pi-trash" [text]="true" [rounded]="true" severity="danger" size="small" (onClick)="eliminarTicket(ticket)"></p-button>
+                            @if (esCreador(ticket)) {
+                                <p-button *ifHasPermission="['groups:detail:baja']" icon="pi pi-trash" [text]="true" [rounded]="true" severity="danger" size="small" (click)="$event.stopPropagation(); eliminarTicket(ticket)"></p-button>
+                            }
                         </td>
                     </tr>
                 </ng-template>
@@ -149,5 +156,81 @@
     }
 </div>
 
-<p-dialog [(visible)]="modalVisible" [header]="modoEdicion ? 'Editar Ticket' : 'Nuevo Ticket'" [modal]="true" [style]="{ width: '400px' }" [draggable]="false">
-    <form [formGroup]="form" class="flex flex-column pt-4 pb-2" style="gap: 1.5rem;">
+<p-dialog [(visible)]="modalVisible" [header]="modoEdicion ? 'Detalle de Ticket' : 'Nuevo Ticket'" [modal]="true" [style]="{ width: '800px' }" [draggable]="false">
+    <div class="grid pt-4">
+        <div class="col-12 md:col-6 flex flex-column gap-4 border-right-none md:border-right-1 surface-border pr-0 md:pr-4">
+            <form [formGroup]="form" class="flex flex-column gap-3">
+                <div>
+                    <label class="block mb-1 text-sm text-color-secondary font-medium">Título</label>
+                    <input type="text" pInputText formControlName="titulo" class="w-full">
+                </div>
+                <div class="grid">
+                    <div class="col-6">
+                        <label class="block mb-1 text-sm text-color-secondary font-medium">Estado</label>
+                        <select formControlName="estado" class="w-full p-inputtext" style="appearance: auto;">
+                            @for (est of estados; track est) { <option [value]="est">{{ est }}</option> }
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="block mb-1 text-sm text-color-secondary font-medium">Prioridad</label>
+                        <select formControlName="prioridad" class="w-full p-inputtext" style="appearance: auto;">
+                            @for (prio of prioridades; track prio) { <option [value]="prio">{{ prio }}</option> }
+                        </select>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-6">
+                        <label class="block mb-1 text-sm text-color-secondary font-medium">Asignado a</label>
+                        <select formControlName="asignado" class="w-full p-inputtext" style="appearance: auto;">
+                            <option value="" disabled>Seleccione un usuario...</option>
+                            @for (usr of usuarios; track usr) { <option [value]="usr">{{ usr }}</option> }
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="block mb-1 text-sm text-color-secondary font-medium">Fecha Límite</label>
+                        <input type="date" pInputText formControlName="fechaLimite" class="w-full">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-12 md:col-6 flex flex-column pl-0 md:pl-4" *ngIf="modoEdicion && ticketSeleccionado">
+            <h4 class="m-0 mb-3 text-color">Comentarios</h4>
+            <div class="flex-1 overflow-y-auto mb-3" style="max-height: 150px;">
+                @for (com of ticketSeleccionado.comentarios; track com.fecha) {
+                    <div class="mb-2 p-2 surface-ground border-round">
+                        <div class="flex justify-content-between text-xs text-color-secondary mb-1">
+                            <strong>{{ com.autor }}</strong> <span>{{ com.fecha | date:'dd/MM HH:mm' }}</span>
+                        </div>
+                        <div class="text-sm text-color">{{ com.texto }}</div>
+                    </div>
+                }
+            </div>
+            <div class="flex gap-2 mb-4">
+                <input #comentarioInput type="text" pInputText placeholder="Añadir comentario..." class="w-full text-sm" (keyup.enter)="agregarComentario(comentarioInput)">
+                <p-button icon="pi pi-send" (onClick)="agregarComentario(comentarioInput)"></p-button>
+            </div>
+
+            <h4 class="m-0 mb-3 text-color">Historial</h4>
+            <div class="flex-1 overflow-y-auto" style="max-height: 100px;">
+                <ul class="m-0 pl-3 text-sm text-color-secondary">
+                    @for (hist of ticketSeleccionado.historial?.slice()?.reverse(); track hist.fecha) {
+                        <li class="mb-1">{{ hist.accion }} ({{ hist.fecha | date:'dd/MM HH:mm' }})</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <ng-template pTemplate="footer">
+        <p-button label="Cancelar" severity="secondary" [text]="true" (onClick)="modalVisible = false"></p-button>
+        
+        @if (modoEdicion && ticketSeleccionado && esCreador(ticketSeleccionado)) {
+            <p-button *ifHasPermission="['groups:detail:baja']" icon="pi pi-trash" [text]="true" [rounded]="true" severity="danger" (onClick)="eliminarTicket(ticketSeleccionado)"></p-button>
+        }
+        
+        @if (form.enabled) {
+            <p-button *ifHasPermission="['groups:detail:editar']" label="Guardar" (onClick)="guardarTicket()" [disabled]="form.invalid"></p-button>
+        }
+    </ng-template>
+</p-dialog>
