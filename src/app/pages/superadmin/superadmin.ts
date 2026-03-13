@@ -16,6 +16,7 @@ import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from 'primeng/tooltip';
+import { HasPermissionDirective } from '../../directives/has-permission.directive'; 
 
 export interface UsuarioAdmin {
     id: string;
@@ -75,7 +76,7 @@ export const PERMISOS_LEGIBLES: PermisoLegible[] = [
         TableModule, CardModule, ButtonModule, DialogModule,
         InputTextModule, TagModule, ToastModule, ConfirmDialogModule,
         FloatLabelModule, PasswordModule, CheckboxModule,
-        DividerModule, TooltipModule,
+        DividerModule, TooltipModule, HasPermissionDirective
     ],
     providers: [MessageService, ConfirmationService],
     templateUrl: './superadmin.html',

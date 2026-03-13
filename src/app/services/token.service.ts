@@ -43,7 +43,7 @@ export class TokenService {
                 'groups:verespecifico', 'groups:detail:crear', 'groups:detail:editar', 'groups:detail:baja', 'groups:mistickets', 
                 'usuarios:ver', 'usuarios:crear', 'usuarios:editar', 'usuarios:baja', 
                 'tickets:ver', 'tickets:agregar', 'tickets:admin', 'tickets:editar', 'tickets:eliminar', 'tickets:detalle', 
-                'superadmin:ver', 'superadmin:editar', 'superadmin:baja', 'superadmin:crear'
+                'superadmin:ver', 'superadmin:editar', 'superadmin:baja', 'superadmin:crear', 'superadmin:gestionarpermisos'
             ]
         };
 
