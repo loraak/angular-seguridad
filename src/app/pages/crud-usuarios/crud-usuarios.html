@@ -4,11 +4,11 @@
 <p-card>
     <ng-template pTemplate="header">
         <div class="flex justify-content-between align-items-center px-4 pt-3">
-            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #1e293b;">
-                Gestión de Usuarios
+            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--text-color);">
+                Gestión de Grupos
             </h2>
             <div class="flex gap-2">
-                <p-button *ifHasPermission="['groups:admin']" label="Nuevo Grupo" icon="pi pi-plus" severity="secondary"
+                <p-button *ifHasPermission="['groups:crear']" label="Nuevo Grupo" icon="pi pi-plus" severity="secondary"
                     (onClick)="abrirModalGrupo()">
                 </p-button>
                 <p-button *ifHasPermission="['usuarios:crear']" label="Nuevo Usuario" icon="pi pi-plus"
@@ -23,11 +23,18 @@
         @for (grupo of grupos; track grupo.id) {
             <div>
                 <div class="flex align-items-center justify-content-between mb-2">
-                    <p-button *ifHasPermission="['groups:admin']" icon="pi pi-trash" [rounded]="true" [text]="true"
-                        severity="danger"
-                        pTooltip="Eliminar grupo"
-                        (onClick)="confirmarEliminarGrupo(grupo)">
-                    </p-button>
+                    <h3 class="m-0 text-xl font-semibold text-color">{{ grupo.nombre }}</h3>
+                    <div class="flex gap-2">
+                        <p-button *ifHasPermission="['groups:editar']" icon="pi pi-pencil" [rounded]="true" [text]="true"
+                            pTooltip="Editar grupo"
+                            (onClick)="abrirModalEditarGrupo(grupo)">
+                        </p-button>
+                        <p-button *ifHasPermission="['groups:baja']" icon="pi pi-trash" [rounded]="true" [text]="true"
+                            severity="danger"
+                            pTooltip="Eliminar grupo"
+                            (onClick)="confirmarEliminarGrupo(grupo)">
+                        </p-button>
+                    </div>
                 </div>
 
                 <p-table
@@ -90,10 +97,8 @@
 
         @if (usuariosSinGrupo.length > 0) {
             <div>
-                <div class="flex align-items-center gap-2 mb-2">
-                    <i class="pi pi-user" style="color: #94a3b8;"></i>
-                    <span style="font-weight: 600; font-size: 1rem; color: #94a3b8;">Sin grupo asignado</span>
-                    <p-tag [value]="usuariosSinGrupo.length + ' usuarios'" severity="secondary"></p-tag>
+                <div class="flex align-items-center justify-content-between mb-2">
+                    <h3 class="m-0 text-xl font-semibold text-color">Usuarios sin grupo</h3>
                 </div>
 
                 <p-table [value]="usuariosSinGrupo" styleClass="p-datatable-gridlines p-datatable-sm">
@@ -191,6 +196,15 @@
 
     <form [formGroup]="formUsuario">
         <div style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1.5rem 0 0.5rem;">
+            
+            <p-floatlabel>
+                <input id="nombreCompleto" type="text" pInputText formControlName="nombreCompleto" class="w-full">
+                <label for="nombreCompleto">Nombre Completo</label>
+            </p-floatlabel>
+            @if (formUsuario.get('nombreCompleto')!.touched && formUsuario.get('nombreCompleto')!.errors?.['required']) {
+                <small class="p-error block" style="margin-top: -1rem;">El nombre es requerido.</small>
+            }
+
             <p-floatlabel>
                 <input id="email" type="email" pInputText formControlName="email" class="w-full">
                 <label for="email">Email</label>

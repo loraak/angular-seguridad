@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+// PrimeNG Imports
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -13,10 +15,11 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { PasswordModule } from 'primeng/password';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DividerModule } from 'primeng/divider';
+import { TooltipModule } from 'primeng/tooltip';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
 import { PermissionsService } from '../../services/permissions.service'; 
-import { HasPermissionDirective } from '../../directives/has-permission.directive'; 
+import { HasPermissionDirective } from '../../directives/has-permission.directive';
 
 export interface UsuarioCrud {
     id: string;
@@ -40,7 +43,7 @@ export interface GrupoOpcion {
         TableModule, CardModule, ButtonModule, DialogModule,
         InputTextModule, TagModule, ToastModule, ConfirmDialogModule,
         FloatLabelModule, PasswordModule, MultiSelectModule, DividerModule,
-        HasPermissionDirective // <-- Importamos la directiva
+        TooltipModule, HasPermissionDirective 
     ],
     providers: [MessageService, ConfirmationService],
     templateUrl: './crud-usuarios.html',
@@ -50,19 +53,34 @@ export class Usuarios {
     protected permissionsSvc = inject(PermissionsService);
 
     grupos: GrupoOpcion[] = [
-        { id: 1, nombre: 'Joestar'     },
-        { id: 2, nombre: 'Stardust'    },
-        { id: 3, nombre: 'Diamond'     },
-        { id: 4, nombre: 'Passione'    },
-        { id: 5, nombre: 'Stone Ocean' },
-        { id: 6, nombre: 'Steel Ball'  },
-        { id: 7, nombre: 'Jojolion'    },
+        { id: 1, nombre: 'Phantom Blood' },
+        { id: 2, nombre: 'Golden Experience' },
+        { id: 3, nombre: 'El Padrino' },
+        { id: 4, nombre: 'Réquiem' },
+        { id: 5, nombre: 'Star Dust' },
+        { id: 6, nombre: 'Stone Ocean' }
     ];
 
     usuarios: UsuarioCrud[] = [
-        { id: '1', nombreCompleto: 'César Admin',   email: 'admin@app.com',   password: '123', grupos: [1, 2], activo: true  },
-        { id: '2', nombreCompleto: 'César Usuario', email: 'usuario@app.com', password: '123', grupos: [1, 3], activo: true  },
-        { id: '3', nombreCompleto: 'Juan Prueba',   email: 'juan@app.com',    password: '123', grupos: [],     activo: false },
+        { id: '1', nombreCompleto: 'Jonathan Joestar',   email: 'jonathan@gmail.com',   password: '123', grupos: [1], activo: true  },
+        { id: '2', nombreCompleto: 'Giorno Giovanna', email: 'giorno@app.com', password: '123', grupos: [2, 3, 4], activo: true  },
+        { id: '3', nombreCompleto: 'Dio Brando',   email: 'dio@gmail.com',    password: '123', grupos: [1],     activo: false },
+        { id: '4', nombreCompleto: 'Mista',   email: 'mista@gmail.com',    password: '123', grupos: [2, 3 ,4],     activo: true},
+        { id: '5', nombreCompleto: 'Narancia',   email: 'narancia@gmail.com',    password: '123', grupos: [2],     activo: false },
+        { id: '6', nombreCompleto: 'Fugo',   email: 'fugo@gmail.com',    password: '123', grupos: [2],     activo: true },
+        { id: '7', nombreCompleto: 'Abbacchio',   email: 'gabacho@gmail.com',    password: '123', grupos: [1],     activo: false },
+        { id: '8', nombreCompleto: 'Trisha',   email: 'trisha@gmail.com',    password: '123', grupos: [2, 4],     activo: true },
+        { id: '9', nombreCompleto: 'Bruno Bucciarati',   email: 'bruno@gmail.com',    password: '123', grupos: [2, 4],     activo: false },
+        { id: '10', nombreCompleto: 'Kakyoin',   email: 'kakyoin@gmail.com',    password: '123', grupos: [5],     activo: false },
+        { id: '11', nombreCompleto: 'Polnareff',   email: 'polnareff@gmail.com',    password: '123', grupos: [5],     activo: true },
+        { id: '12', nombreCompleto: 'Avdol',   email: 'avdol@gmail.com',    password: '123', grupos: [5],     activo: false },
+        { id: '13', nombreCompleto: 'Jotaro Kujo',   email: 'jotaro@gmail.com',    password: '123', grupos: [5],     activo: true },
+        { id: '14', nombreCompleto: 'Joseph Joestar',   email: 'joseph@gmail.com',    password: '123', grupos: [5],     activo: true },
+        { id: '15', nombreCompleto: 'Jolyne Joestar',   email: 'jolyne@gmail.com',    password: '123', grupos: [6],     activo: true },
+        { id: '16', nombreCompleto: 'Weather',   email: 'weather@gmail.com',    password: '123', grupos: [6],     activo: false },
+        { id: '17', nombreCompleto: 'Anastasia',   email: 'anastasia@gmail.com',    password: '123', grupos: [6],     activo: true },
+        { id: '18', nombreCompleto: 'F.F.',   email: 'ff@gmail.com',    password: '123', grupos: [6],     activo: false },
+        { id: '19', nombreCompleto: 'Ermes',   email: 'ermes@gmail.com',    password: '123', grupos: [6],     activo: true },
     ];
 
     usuariosPorGrupo(grupoId: number): UsuarioCrud[] {
@@ -77,9 +95,11 @@ export class Usuarios {
     modoEdicion = false;
     usuarioSeleccionado: UsuarioCrud | null = null;
     formUsuario: FormGroup;
+    grupoSeleccionado: GrupoOpcion | null = null;
 
     modalGrupoVisible = false;
     formGrupo: FormGroup;
+    modoEdicionGrupo = false; 
 
     constructor(
         private fb: FormBuilder,
@@ -99,7 +119,16 @@ export class Usuarios {
     }
 
     abrirModalGrupo() {
+        this.modoEdicionGrupo = false;
+        this.grupoSeleccionado = null;
         this.formGrupo.reset();
+        this.modalGrupoVisible = true;
+    }
+
+    abrirModalEditarGrupo(grupo: GrupoOpcion) {
+        this.modoEdicionGrupo = true;
+        this.grupoSeleccionado = grupo;
+        this.formGrupo.patchValue({ nombre: grupo.nombre });
         this.modalGrupoVisible = true;
     }
 
@@ -108,12 +137,20 @@ export class Usuarios {
             this.formGrupo.markAllAsTouched();
             return;
         }
-        const nuevoGrupo: GrupoOpcion = {
-            id: Date.now(),
-            nombre: this.formGrupo.value.nombre
-        };
-        this.grupos = [...this.grupos, nuevoGrupo];
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: `Grupo "${nuevoGrupo.nombre}" creado.` });
+
+        if (this.modoEdicionGrupo && this.grupoSeleccionado) {
+            const idx = this.grupos.findIndex(g => g.id === this.grupoSeleccionado!.id);
+            this.grupos[idx] = { ...this.grupoSeleccionado, nombre: this.formGrupo.value.nombre };
+            this.grupos = [...this.grupos];
+            this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Grupo modificado correctamente.' });
+        } else {
+            const nuevoGrupo: GrupoOpcion = {
+                id: Date.now(),
+                nombre: this.formGrupo.value.nombre
+            };
+            this.grupos = [...this.grupos, nuevoGrupo];
+            this.messageService.add({ severity: 'success', summary: 'Creado', detail: `Grupo "${nuevoGrupo.nombre}" creado.` });
+        }
         this.modalGrupoVisible = false;
     }
 
@@ -127,7 +164,6 @@ export class Usuarios {
             acceptButtonProps: { severity: 'danger' },
             rejectButtonProps: { severity: 'secondary', text: true },
             accept: () => {
-                // Desasignar grupo de usuarios
                 this.usuarios = this.usuarios.map(u => ({
                     ...u,
                     grupos: u.grupos.filter(gid => gid !== grupo.id)

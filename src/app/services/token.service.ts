@@ -21,7 +21,7 @@ export class TokenService {
             id: '1', nombreCompleto: 'Jonathan Joestar', email: 'jonathan@gmail.com',
             permisos: [
                 'perfil:editar', 'perfil:baja', 'groups:admin', 'groups:ver', 'groups:crear', 'groups:editar', 'groups:baja',
-                'groups:verespecifico', 'groups:detail:crear', 'groups:detail:editar', 'groups:detail:baja',
+                'groups:verespecific  o', 'groups:detail:crear', 'groups:detail:editar', 'groups:detail:baja',
                 'usuarios:ver', 'usuarios:crear', 'usuarios:editar', 'usuarios:baja',
                 'tickets:admin', 'tickets:ver', 'tickets:agregar', 'tickets:editar', 'tickets:eliminar', 'tickets:detalle'
             ]
